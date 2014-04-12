@@ -1,7 +1,4 @@
 ### eqmake4 was here ###
-CONFIG -= debug_and_release debug
-CONFIG += release
-
 TEMPLATE = lib
 
 CONFIG -= qt
@@ -25,3 +22,6 @@ HEADERS += \
     ndarray.h
 
 QMAKE_CXXFLAGS+=-std=c++11
+
+OTHER_FILES += \
+    test_script.py
