@@ -33,17 +33,19 @@ private:
         PyObject * weakreflist;
     };
 
+    typedef unsigned long long int idx_t;
+
     array_struct* ptr;
-    long long int size;
+    idx_t size;
 
 #ifdef BOOST_HAS_VARIADIC_TMPL
-    inline int index(int stridesidx __attribute__((unused))) {
+    inline idx_t index(int stridesidx __attribute__((unused))) {
         ndarr_assert(stridesidx==ptr->nd);
         return 0;
     }
 
     template<typename ... Types>
-    inline int index(int stridesidx, int i, Types... rest) {
+    inline idx_t index(int stridesidx, int i, Types... rest) {
         ndarr_assert(stridesidx<ptr->nd);
         return i*ptr->strides[stridesidx]+index(stridesidx+1,rest...);
     }
@@ -60,14 +62,14 @@ public:
     inline T& operator()(int i0, ...) {
         va_list vl;
         va_start(vl,i0);
-        int idx=i0*ptr->strides[0];
+        idx_t int idx=i0*ptr->strides[0];
         for(int i=1;i<ptr->nd;++i)
             idx+=va_arg(vl,int)*ptr->strides[i];
         va_end(vl);
 #else
     template<typename ... Types>
     inline T& operator()(Types... indexes) {
-        int idx=index(0,indexes...);
+        idx_t idx=index(0,indexes...);
 #endif
         ndarr_assert(idx<size);
         return *reinterpret_cast<T*>(ptr->data+idx);
