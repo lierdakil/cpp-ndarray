@@ -11,8 +11,10 @@
 #pragma message ("NOT using variadic templates")
 #endif
 
-#define my_assert(x) assert(x)
-//#define my_assert(x) //no array_ptr.operator() argument check AT ALL. Use at your own risk.
+#ifndef ndarr_assert
+#define ndarr_assert(x) assert(x)
+#endif
+//#define ndarr_assert(x) //no array_ptr.operator() argument check AT ALL. Use at your own risk.
 
 template<typename T>
 class array_ptr
@@ -36,13 +38,13 @@ private:
 
 #ifdef BOOST_HAS_VARIADIC_TMPL
     inline int index(int stridesidx __attribute__((unused))) {
-        my_assert(stridesidx==ptr->nd);
+        ndarr_assert(stridesidx==ptr->nd);
         return 0;
     }
 
     template<typename ... Types>
     inline int index(int stridesidx, int i, Types... rest) {
-        my_assert(stridesidx<ptr->nd);
+        ndarr_assert(stridesidx<ptr->nd);
         return i*ptr->strides[stridesidx]+index(stridesidx+1,rest...);
     }
 #endif
@@ -67,7 +69,7 @@ public:
     inline T& operator()(Types... indexes) {
         int idx=index(0,indexes...);
 #endif
-        my_assert(idx<size);
+        ndarr_assert(idx<size);
         return *reinterpret_cast<T*>(ptr->data+idx);
     }
 };
