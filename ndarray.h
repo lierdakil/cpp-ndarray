@@ -62,7 +62,7 @@ public:
     inline T& operator()(int i0, ...) {
         va_list vl;
         va_start(vl,i0);
-        idx_t int idx=i0*ptr->strides[0];
+        idx_t idx=i0*ptr->strides[0];
         for(int i=1;i<ptr->nd;++i)
             idx+=va_arg(vl,int)*ptr->strides[i];
         va_end(vl);
