@@ -34,18 +34,19 @@ private:
     };
 
     typedef unsigned long long int idx_t;
+    typedef unsigned int smallidx_t;
 
     array_struct* ptr;
     idx_t size;
 
 #ifdef BOOST_HAS_VARIADIC_TMPL
-    inline idx_t index(int stridesidx __attribute__((unused))) {
+    inline idx_t index(smallidx_t stridesidx __attribute__((unused))) {
         ndarr_assert(stridesidx==ptr->nd);
         return 0;
     }
 
     template<typename ... Types>
-    inline idx_t index(int stridesidx, int i, Types... rest) {
+    inline idx_t index(smallidx_t stridesidx, smallidx_t i, Types... rest) {
         ndarr_assert(stridesidx<ptr->nd);
         return i*ptr->strides[stridesidx]+index(stridesidx+1,rest...);
     }
@@ -59,12 +60,12 @@ public:
     }
 
 #ifndef BOOST_HAS_VARIADIC_TMPL
-    inline T& operator()(int i0, ...) {
+    inline T& operator()(smallidx_t i0, ...) {
         va_list vl;
         va_start(vl,i0);
         idx_t idx=i0*ptr->strides[0];
-        for(int i=1;i<ptr->nd;++i)
-            idx+=va_arg(vl,int)*ptr->strides[i];
+        for(smallidx_t i=1;i<ptr->nd;++i)
+            idx+=va_arg(vl,smallidx_t)*ptr->strides[i];
         va_end(vl);
 #else
     template<typename ... Types>
