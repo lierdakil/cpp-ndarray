@@ -1,4 +1,5 @@
 //#include <boost/numpy.hpp>
+//#define ndarr_assert(x)
 #include <u_bond.h>
 
 #include <iostream>

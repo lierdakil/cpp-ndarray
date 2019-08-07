@@ -12,25 +12,25 @@ import math
 import libmm
 import numpy
 
-# I=random_integers(1,10)
-# J=random_integers(1,10)
-# K=random_integers(1,10)
-I=J=K=200
+I=random_integers(1,10)
+J=random_integers(1,10)
+K=random_integers(1,10)
+I=J=K=100
 
 start=clock()
 # write test
-a=numpy.empty([I])
+a=numpy.require(numpy.empty([I]),requirements=['A','W','C'])
 assert(libmm.test_write(a)==0)
 for i in range(a.shape[0]):
     assert a[i]==i
 
-a=numpy.empty([I,J])
+a=numpy.require(numpy.empty([I,J]),requirements=['A','W','C'])
 assert(libmm.test_write(a)==0)
 for i in range(a.shape[0]):
     for j in range(a.shape[1]):
         assert a[i,j]==j*100+i
 
-a=numpy.empty([I,J,K])
+a=numpy.require(numpy.empty([I,J,K]),requirements=['A','W','C'])
 assert(libmm.test_write(a)==0)
 for i in range(a.shape[0]):
     for j in range(a.shape[1]):

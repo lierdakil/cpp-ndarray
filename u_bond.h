@@ -15,7 +15,7 @@ double test_write(object arr1) {
 #ifdef NUMPY_EXTRACT
     array_ptr<double> arr = extract<array_ptr<double> >(arr1);
 #else
-    array_ptr<double> arr(arr1);
+    array_ptr<double> arr=(arr1);
 #endif
     if(arr->nd==1) {
         for(int i=0; i<arr->shape[0];++i)
